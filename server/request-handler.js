@@ -65,7 +65,7 @@ var requestHandler = function(request, response) {
     request.on('data', function(chunk){
       chunks += chunk.toString();
     });
-    console.log(typeof messageStorage.results);
+    
     request.on('end', function(){
       messageStorage.results.push(JSON.parse(chunks));
     });
@@ -78,10 +78,11 @@ var requestHandler = function(request, response) {
 
     if (request.url === '/classes/room1' || request.url === '/classes/messages' || request.url ==='/classes/room'){
       response.writeHead(200, headers);
-      console.log(typeof JSON.stringify(messageStorage));
+      
       response.end(JSON.stringify(messageStorage));
     } else {
       response.writeHead(404, headers);
+
       response.end();
     }
   }
