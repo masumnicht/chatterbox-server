@@ -63,26 +63,28 @@ var requestHandler = function(request, response) {
   if(request.method === 'POST') {
     
     request.on('data', function(chunk){
-      chunks += chunk;
+      chunks += chunk.toString();
     });
-
+    console.log(typeof messageStorage.results);
     request.on('end', function(){
       messageStorage.results.push(JSON.parse(chunks));
     });
 
-    
     response.writeHead(201, headers);
     response.end();
   }
  
   if(request.method === 'GET') {
-    response.writeHead(200, headers);
-    response.end(JSON.stringify(messageStorage));
-  }
 
-  //can send html, JSON, etc.
-  // response.end(JSON.stringify(messageStorage));
-  response.end();
+    if (request.url === '/classes/room1' || request.url === '/classes/messages' || request.url ==='/classes/room'){
+      response.writeHead(200, headers);
+      console.log(typeof JSON.stringify(messageStorage));
+      response.end(JSON.stringify(messageStorage));
+    } else {
+      response.writeHead(404, headers);
+      response.end();
+    }
+  }
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
